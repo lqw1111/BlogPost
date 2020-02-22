@@ -1,0 +1,6 @@
+{
+  "requirment" : "make sure have maven environment",
+  "install" : "brew install maven(MacOS)",
+  "run" : "mvn spring-boot:run",
+  "port" : 3000
+}
