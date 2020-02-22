@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-import com.example.demo.domain.PingDTO;
 import com.example.demo.domain.PostDTO;
 import com.example.demo.exception.MissingRequestParameterException;
 import com.example.demo.exception.ParameterInvalidationException;
@@ -15,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -29,14 +30,17 @@ public class BlogPostController {
     private PostService postService;
 
     @GetMapping(value = "ping", produces = APPLICATION_JSON)
-    public ResponseEntity<PingDTO> ping() {
-        return ResponseEntity.status(HttpStatus.OK).body(new PingDTO(true));
+    public ResponseEntity<Map<String, Boolean>> ping() {
+        Map<String, Boolean> map = new HashMap();
+        map.put("success", true);
+        return ResponseEntity.status(HttpStatus.OK).body(map);
     }
 
-    @GetMapping(value = "posts", produces = APPLICATION_JSON)
+    @GetMapping(value = "posts", produces = "application/vnd.com.demo+json;v=1;charset=utf-8")
     public PostDTO getPostInformation(@RequestParam Optional<List<String>> tags,
                                       @RequestParam(value = Constants.SORT_BY, defaultValue = Constants.ID, required = false) String sortBy,
                                       @RequestParam(value = Constants.DIRECTION, defaultValue = Constants.ASC, required = false) String direction) {
+        log.info("tags: " + tags + ", sortBy: " + sortBy + ", direction: " + direction);
         tags.filter(list -> !list.isEmpty()).orElseThrow(() -> new MissingRequestParameterException(Constants.TAGS));
         if (!Constants.LIST_SORT_BY.contains(sortBy)) {
             throw new ParameterInvalidationException(Constants.SORT_BY);
