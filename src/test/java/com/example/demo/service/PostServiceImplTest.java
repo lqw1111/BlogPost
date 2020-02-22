@@ -11,6 +11,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import java.util.Arrays;
+import java.util.Optional;
+
 import static org.junit.Assert.assertEquals;
 import static org.mockito.BDDMockito.*;
 
@@ -34,7 +36,7 @@ public class PostServiceImplTest {
 
     @Test
     public void givenTagsSortByAndDirection_WhenHittingComsumerService_thenReturnResponse() {
-        given(feign.getResponseFromHatchWay("tech")).willReturn(postDTO);
+        given(feign.getResponseFromHatchWay("tech")).willReturn(Optional.of(postDTO));
         PostDTO result = postService.operatePostInformation(Arrays.asList("tech"), "id", "asc");
         assertEquals(95, result.getPosts().get(0).getId().intValue());
     }
