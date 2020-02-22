@@ -41,6 +41,6 @@ public class PostServiceImpl implements PostService {
         } else if (sortBy.equals(Constants.POPULARITY)) {
             return direction.equals(Constants.ASC) ? p1.getPopularity().compareTo(p2.getPopularity()) : p2.getPopularity().compareTo(p1.getPopularity());
         }
-        return 0;
+        return 1;
     }
 }
