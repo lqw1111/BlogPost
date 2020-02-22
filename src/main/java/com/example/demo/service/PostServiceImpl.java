@@ -44,4 +44,17 @@ public class PostServiceImpl implements PostService {
                 .distinct().collect(Collectors.toList());
         return new PostDTO(resultList);
     }
+
+    private int sortBy(String direction, String sortBy, BookDTO p1, BookDTO p2) {
+        if (sortBy.equals(Constants.ID)) {
+            return direction.equals(Constants.ASC) ? p1.getId() - p2.getId() : p2.getId() - p1.getId();
+        } else if (sortBy.equals(Constants.READS)) {
+            return direction.equals(Constants.ASC) ? p1.getReads() - p2.getReads() : p2.getReads() - p1.getReads();
+        } else if (sortBy.equals(Constants.LIKES)) {
+            return direction.equals(Constants.ASC) ? p1.getLikes() - p2.getLikes() : p2.getLikes() - p1.getLikes();
+        } else if (sortBy.equals(Constants.POPULARITY)) {
+            return direction.equals(Constants.ASC) ? p1.getPopularity().compareTo(p2.getPopularity()) : p2.getPopularity().compareTo(p1.getPopularity());
+        }
+        return 2;
+    }
 }
