@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,14 +30,21 @@ public class BlogPostController {
     @Autowired
     private PostService postService;
 
-    @GetMapping(value = "ping", produces = APPLICATION_JSON)
+    @GetMapping(value = "ping", produces = "application/vnd.com.demo+json;v=1;charset=utf-8")
     public ResponseEntity<Map<String, Boolean>> ping() {
         Map<String, Boolean> map = new HashMap();
         map.put("success", true);
         return ResponseEntity.status(HttpStatus.OK).body(map);
     }
 
-    @GetMapping(value = "posts", produces = "application/vnd.com.demo+json;v=1;charset=utf-8")
+    @GetMapping(value = "ping", produces = "application/vnd.com.demo+json;v=2;charset=utf-8")
+    public ResponseEntity<Map<String, Boolean>> ping2() {
+        Map<String, Boolean> map = new HashMap();
+        map.put("success", false);
+        return ResponseEntity.status(HttpStatus.OK).body(map);
+    }
+
+    @GetMapping(value = "posts")
     public PostDTO getPostInformation(@RequestParam Optional<List<String>> tags,
                                       @RequestParam(value = Constants.SORT_BY, defaultValue = Constants.ID, required = false) String sortBy,
                                       @RequestParam(value = Constants.DIRECTION, defaultValue = Constants.ASC, required = false) String direction) {
